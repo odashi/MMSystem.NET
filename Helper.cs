@@ -5,7 +5,7 @@ namespace MidiSharp
 	/// <summary>
 	/// MIDI メッセージ送出のためのヘルパクラス。
 	/// </summary>
-	public class Helper
+	public static class Helper
 	{
 		/// <summary>
 		/// ノート オフ メッセージを送出する。
@@ -14,7 +14,7 @@ namespace MidiSharp
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="note">ノート。</param>
 		/// <param name="velocity">ベロシティ。</param>
-		public static void NoteOff(Controller controller, byte channel, byte note, byte velocity)
+		public static void NoteOff(this Controller controller, byte channel, byte note, byte velocity)
 		{
 			controller.Send((byte)(0x80 | (channel & 0x0f)), note, velocity);
 		}
@@ -26,7 +26,7 @@ namespace MidiSharp
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="note">ノート。</param>
 		/// <param name="velocity">ベロシティ。</param>
-		public static void NoteOn(Controller controller, byte channel, byte note, byte velocity)
+		public static void NoteOn(this Controller controller, byte channel, byte note, byte velocity)
 		{
 			controller.Send((byte)(0x90 | (channel & 0x0f)), note, velocity);
 		}
@@ -38,7 +38,7 @@ namespace MidiSharp
 		/// <param name="channel">チャンネル。/param>
 		/// <param name="note">ノート。</param>
 		/// <param name="pressure">設定するプレッシャー。</param>
-		public static void PolyphonicKeyPressure(Controller controller, byte channel, byte note, byte pressure)
+		public static void PolyphonicKeyPressure(this Controller controller, byte channel, byte note, byte pressure)
 		{
 			controller.Send((byte)(0xa0 | (channel & 0x0f)), note, pressure);
 		}
@@ -50,7 +50,7 @@ namespace MidiSharp
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="number">コントロールチェンジ番号。</param>
 		/// <param name="value">設定する値。</param>
-		public static void ControlChange(Controller controller, byte channel, byte number, byte value)
+		public static void ControlChange(this Controller controller, byte channel, byte number, byte value)
 		{
 			controller.Send((byte)(0xb0 | (channel & 0x0f)), number, value);
 		}
@@ -61,7 +61,7 @@ namespace MidiSharp
 		/// <param name="controller">対象のコントローラ。</param>
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="program">設定するプログラム。</param>
-		public static void ProgramChange(Controller controller, byte channel, byte program)
+		public static void ProgramChange(this Controller controller, byte channel, byte program)
 		{
 			controller.Send((byte)(0xc0 | (channel & 0x0f)), program);
 		}
@@ -72,7 +72,7 @@ namespace MidiSharp
 		/// <param name="controller">対象のコントローラ。</param>
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="pressure">設定するプレッシャー。</param>
-		public static void ChannelPressure(Controller controller, byte channel, byte pressure)
+		public static void ChannelPressure(this Controller controller, byte channel, byte pressure)
 		{
 			controller.Send((byte)(0xd0 | (channel & 0x0f)), pressure);
 		}
@@ -83,7 +83,7 @@ namespace MidiSharp
 		/// <param name="controller">対象のコントローラ。</param>
 		/// <param name="channel">チャンネル。</param>
 		/// <param name="pitch">設定するピッチ。-8192 から 8191 の範囲で設定する。</param>
-		public static void PitchBend(Controller controller, byte channel, short pitch)
+		public static void PitchBend(this Controller controller, byte channel, short pitch)
 		{
 			pitch += 8192;
 			pitch &= 0x3fff;
