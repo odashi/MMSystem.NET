@@ -35,7 +35,7 @@ namespace MMSystem
 		/// MMRESULT 値から Win32Exception オブジェクトを生成する。
 		/// </summary>
 		/// <param name="result">MMRESULT 値。</param>
-		public Win32Exception(Win32.MMRESULT result)
+		internal Win32Exception(Win32.MMRESULT result)
 			: base(result.ToString())
 		{
 		}

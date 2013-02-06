@@ -8,7 +8,7 @@ namespace MMSystem
 		/// <summary>
 		/// Win32 MMRESULT 値。
 		/// </summary>
-		public enum MMRESULT : uint
+		internal enum MMRESULT : uint
 		{
 			MMSYSERR_NOERROR = 0,
 			MMSYSERR_ERROR = 1,
@@ -41,13 +41,16 @@ namespace MMSystem
 			MIDIERR_INVALIDSETUP = 69,
 			MIDIERR_BADOPENMODE = 70,
 			MIDIERR_DONT_CONTINUE = 71,
+
+			TIMEERR_NOCANDO = 97,
+			TIMEERR_STRUCT = 129,
 		}
 
 		/// <summary>
 		/// MIDIHDR.dwFlags のフラグ。
 		/// </summary>
 		[Flags]
-		public enum MIDIHDR_FLAGS : uint
+		internal enum MIDIHDR_FLAGS : uint
 		{
 			MHDR_DONE = 1,
 			MHDR_PREPARED = 2,
@@ -59,70 +62,100 @@ namespace MMSystem
 		/// Win32 MIDIOOUTCAPS 構造体。
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
-		public unsafe struct MIDIOUTCAPS
+		internal unsafe struct MIDIOUTCAPS
 		{
-			public const uint MAXPNAMELEN = 32;
-			public ushort wMid;
-			public ushort wPid;
-			public uint vDriverVersion;
-			public fixed byte szPname[(int)MAXPNAMELEN];
-			public ushort wTechnology;
-			public ushort wVoices;
-			public ushort wNotes;
-			public ushort wChannelMask;
-			public uint dwSupport;
+			internal const uint MAXPNAMELEN = 32;
+			internal ushort wMid;
+			internal ushort wPid;
+			internal uint vDriverVersion;
+			internal fixed byte szPname[(int)MAXPNAMELEN];
+			internal ushort wTechnology;
+			internal ushort wVoices;
+			internal ushort wNotes;
+			internal ushort wChannelMask;
+			internal uint dwSupport;
 		}
 
 		/// <summary>
 		/// Win32 MIDIHDR 構造体。
 		/// </summary>
 		[StructLayout(LayoutKind.Sequential, Pack = 4)]
-		public unsafe struct MIDIHDR
+		internal unsafe struct MIDIHDR
 		{
-			public IntPtr lpData;
-			public uint dwBufferLength;
-			public uint dwBytesRecorded;
-			public IntPtr dwUser;
-			public MIDIHDR_FLAGS dwFlags;
-			public IntPtr lpNext;
-			public IntPtr reserved;
-			public uint dwOffset;
+			internal IntPtr lpData;
+			internal uint dwBufferLength;
+			internal uint dwBytesRecorded;
+			internal IntPtr dwUser;
+			internal MIDIHDR_FLAGS dwFlags;
+			internal IntPtr lpNext;
+			internal IntPtr reserved;
+			internal uint dwOffset;
 			// 本来 dwReserved[8] だが、固定長バッファは IntPtr では作成できない。
 			// また IntPtr[] 型は fixed で使用できない。
 			// 仕方ないのでこうする。
-			public IntPtr dwReserved1;
-			public IntPtr dwReserved2;
-			public IntPtr dwReserved3;
-			public IntPtr dwReserved4;
-			public IntPtr dwReserved5;
-			public IntPtr dwReserved6;
-			public IntPtr dwReserved7;
-			public IntPtr dwReserved8;
+			internal IntPtr dwReserved1;
+			internal IntPtr dwReserved2;
+			internal IntPtr dwReserved3;
+			internal IntPtr dwReserved4;
+			internal IntPtr dwReserved5;
+			internal IntPtr dwReserved6;
+			internal IntPtr dwReserved7;
+			internal IntPtr dwReserved8;
+		}
+
+		/// <summary>
+		/// マルチメディアタイマのコールバック関数。
+		/// </summary>
+		/// <param name="uTimerID">timeSetEvent() で設定されるタイマ ID。</param>
+		/// <param name="uMsg">予約済み。</param>
+		/// <param name="dwUser">timeSetEvent() で設定されるユーザ定義の値。</param>
+		/// <param name="dw1">予約済み。</param>
+		/// <param name="dw2">予約済み。</param>
+		internal delegate void TimeProc(uint uTimerID, uint uMsg, IntPtr dwUser, IntPtr dw1, IntPtr dw2);
+
+		[Flags]
+		internal enum TIME_FLAGS : uint
+		{
+			TIME_ONESHOT = 0x0,
+			TIME_PERIODIC = 0x1,
+			TIME_CALLBACK_FUNCTION = 0x0,
+			TIME_CALLBACK_EVENT_SET = 0x10,
+			TIME_CALLBACK_EVENT_PULSE = 0x20,
 		}
 
 		/// <summary>
 		/// Win32 API アクセサ。
 		/// </summary>
-		public static class Api
+		internal static class Api
 		{
 			[DllImport("winmm.dll")]
-			extern public static uint midiOutGetNumDevs();
+			extern internal static MMRESULT timeBeginPeriod(uint uPeriod);
+			[DllImport("winmm.dll")]
+			extern internal static MMRESULT timeEndPeriod(uint uPeriod);
+			[DllImport("winmm.dll")]
+			extern internal static MMRESULT timeSetEvent(uint uDelay, uint uResolution, TimeProc lpTimeProc, IntPtr dwUser, TIME_FLAGS fuEvent);
+			[DllImport("winmm.dll")]
+			extern internal static MMRESULT timeKillEvent(uint uTimerID);
+			[DllImport("winmm.dll")]
+			extern internal static uint timeGetTime();
+			[DllImport("winmm.dll")]
+			extern internal static uint midiOutGetNumDevs();
 			[DllImport("winmm.dll", EntryPoint = "midiOutGetDevCapsA")]
-			extern public static MMRESULT midiOutGetDevCaps(uint uDeviceID, IntPtr lpMidiOutCaps, uint cbMidiOutCaps);
+			extern internal static MMRESULT midiOutGetDevCaps(uint uDeviceID, IntPtr lpMidiOutCaps, uint cbMidiOutCaps);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutOpen(IntPtr lphmo, uint uDeviceID, uint dwCallback, uint dwCallbackInstance, uint dwFlags);
+			extern internal static MMRESULT midiOutOpen(IntPtr lphmo, uint uDeviceID, uint dwCallback, uint dwCallbackInstance, uint dwFlags);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutClose(IntPtr hmo);
+			extern internal static MMRESULT midiOutClose(IntPtr hmo);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutReset(IntPtr hmo);
+			extern internal static MMRESULT midiOutReset(IntPtr hmo);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutPrepareHeader(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
+			extern internal static MMRESULT midiOutPrepareHeader(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutUnprepareHeader(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
+			extern internal static MMRESULT midiOutUnprepareHeader(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutShortMsg(IntPtr hmo, uint dwMsg);
+			extern internal static MMRESULT midiOutShortMsg(IntPtr hmo, uint dwMsg);
 			[DllImport("winmm.dll")]
-			extern public static MMRESULT midiOutLongMsg(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
+			extern internal static MMRESULT midiOutLongMsg(IntPtr hmo, IntPtr lpMidiOutHdr, uint cbMidiOutHdr);
 		}
 	}
 }

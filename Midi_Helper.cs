@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MMSystem
+﻿namespace MMSystem
 {
 	namespace Midi
 	{
