@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MidiSharp
+namespace MMSystem
 {
-	/// <summary>
-	/// Win32 API シンボル。
-	/// </summary>
 	namespace Win32
 	{
 		/// <summary>
@@ -58,7 +55,6 @@ namespace MidiSharp
 			MHDR_ISSTRM = 8,
 		}
 
-
 		/// <summary>
 		/// Win32 MIDIOOUTCAPS 構造体。
 		/// </summary>
@@ -107,7 +103,7 @@ namespace MidiSharp
 		/// <summary>
 		/// Win32 API アクセサ。
 		/// </summary>
-		public class Api
+		public static class Api
 		{
 			[DllImport("winmm.dll")]
 			extern public static uint midiOutGetNumDevs();

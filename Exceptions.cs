@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace MidiSharp
+namespace MMSystem
 {
 	/// <summary>
 	/// Midi 名前空間の例外の基底クラス。
 	/// </summary>
-	public class MidiException : Exception
+	public class MMSystemException : Exception
 	{
 		/// <summary>
 		/// メッセージを指定して MidiException オブジェクトを生成する。
 		/// </summary>
 		/// <param name="message">メッセージ。</param>
-		public MidiException(string message)
+		public MMSystemException(string message)
 			: base("MIDI: " + message)
 		{
 		}
@@ -20,7 +20,7 @@ namespace MidiSharp
 	/// <summary>
 	/// Win32 API のエラーによる例外。
 	/// </summary>
-	public class Win32Exception : MidiException
+	public class Win32Exception : MMSystemException
 	{
 		/// <summary>
 		/// メッセージを指定して Win32Exception オブジェクトを生成する。
