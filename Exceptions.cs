@@ -12,7 +12,7 @@ namespace MMSystem
 		/// </summary>
 		/// <param name="message">メッセージ。</param>
 		public MMSystemException(string message)
-			: base("MIDI: " + message)
+			: base("MMSystem: " + message)
 		{
 		}
 	}
