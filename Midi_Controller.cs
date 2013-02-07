@@ -10,6 +10,9 @@ namespace MMSystem
 		/// </summary>
 		public class Controller : IDisposable
 		{
+			/// <summary>
+			/// 一度に送出できる MIDI メッセージの最大バイト数。
+			/// </summary>
 			public const uint MAX_BYTES_PER_SENDING = 1024;
 
 			/// <summary>

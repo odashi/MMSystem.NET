@@ -4,6 +4,10 @@ namespace MMSystem
 {
 	namespace Time
 	{
+		/// <summary>
+		/// ユーザ定義のイベント コールバック メソッドのデリゲート。
+		/// </summary>
+		/// <param name="user">ユーザ定義のデータ。</param>
 		public delegate void EventCallback(object user);
 
 		/// <summary>

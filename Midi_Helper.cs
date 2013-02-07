@@ -35,7 +35,7 @@
 			/// ポリフォニック キー プレッシャー メッセージを送出する。
 			/// </summary>
 			/// <param name="controller">対象のコントローラ。</param>
-			/// <param name="channel">チャンネル。/param>
+			/// <param name="channel">チャンネル。</param>
 			/// <param name="note">ノート。</param>
 			/// <param name="pressure">設定するプレッシャー。</param>
 			public static void PolyphonicKeyPressure(this Controller controller, byte channel, byte note, byte pressure)
