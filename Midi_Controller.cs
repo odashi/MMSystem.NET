@@ -116,13 +116,21 @@ namespace MMSystem
 				// HMIDIOUT オブジェクトの破棄
 				if (hmo_ != IntPtr.Zero)
 				{
-					Win32.Api.midiOutReset(hmo_);
+					Reset();
 					Win32.Api.midiOutClose(hmo_);
 					hmo_ = IntPtr.Zero;
 				}
 
 				// GC がデストラクタを呼び出さないようにする
 				GC.SuppressFinalize(this);
+			}
+
+			/// <summary>
+			/// MIDI 出力デバイスをリセットする。
+			/// </summary>
+			public void Reset()
+			{
+				Win32.Api.midiOutReset(hmo_);
 			}
 
 			/// <summary>
