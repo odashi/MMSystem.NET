@@ -10,10 +10,20 @@ namespace MMSystem
 		/// </summary>
 		public class Controller : IDisposable
 		{
+			DeviceCaps caps_;
+
 			/// <summary>
 			/// 一度に送出できる MIDI メッセージの最大バイト数。
 			/// </summary>
 			public const int MAX_BYTES_PER_SENDING = 1024;
+
+			/// <summary>
+			/// MIDI 出力デバイスの情報。
+			/// </summary>
+			public DeviceCaps DeviceCaps
+			{
+				get { return caps_; }
+			}
 
 			/// <summary>
 			/// MIDI 出力デバイスのコントローラを生成する。
@@ -22,6 +32,8 @@ namespace MMSystem
 			public Controller(uint deviceId)
 			{
 				Win32.MMRESULT ret;
+
+				caps_ = new DeviceCaps(deviceId);
 
 				// MIDIHDR オブジェクトのサイズ
 				cb_hdr_ = (uint)Marshal.SizeOf(typeof(Win32.MIDIHDR));
