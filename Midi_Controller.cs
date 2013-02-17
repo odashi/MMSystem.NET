@@ -171,10 +171,11 @@ namespace MMSystem
 						Win32.Api.midiOutPrepareHeader(hmo_, hdr_, cb_hdr_);
 
 						// 送出
-						Win32.Api.midiOutLongMsg(hmo_, hdr_, cb_hdr_);
+						var ret = Win32.Api.midiOutLongMsg(hmo_, hdr_, cb_hdr_);
 
 						// 送出完了まで待機 (ブロッキング)
-						while ((((Win32.MIDIHDR*)hdr_)->dwFlags & Win32.MIDIHDR_FLAGS.MHDR_DONE) == 0) ;
+						if (ret == Win32.MMRESULT.MMSYSERR_NOERROR)
+							while ((((Win32.MIDIHDR*)hdr_)->dwFlags & Win32.MIDIHDR_FLAGS.MHDR_DONE) == 0) ;
 
 						// 後始末
 						Win32.Api.midiOutUnprepareHeader(hmo_, hdr_, cb_hdr_);
